@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model corporate_directory {
+  id          Int      @id(map: "PK_0fc8ec22e1b8830dcaffe4dc5cc") @default(autoincrement())
+  charge      String   @db.VarChar
+  extension   String   @db.VarChar
+  user_create String   @db.VarChar
+  user_update String   @db.VarChar
+  created_at  DateTime @default(now()) @db.Timestamp(6)
+  updated_at  DateTime @default(now()) @db.Timestamp(6)
+}
+
+model migrations {
+  id        Int    @id(map: "PK_8c82d7f526340ab734260ea46be") @default(autoincrement())
+  timestamp BigInt
+  name      String @db.VarChar
+}
+
+model news {
+  id          Int      @id(map: "PK_39a43dfcb6007180f04aff2357e") @default(autoincrement())
+  title       String   @db.VarChar
+  date        DateTime @db.Timestamp(6)
+  resumen     String   @db.VarChar
+  user_create String?  @db.VarChar
+  user_update String?  @db.VarChar
+  created_at  DateTime @default(now()) @db.Timestamp(6)
+  updated_at  DateTime @default(now()) @db.Timestamp(6)
+  picture     String?  @db.VarChar
+}
+
+model spaces_availables {
+  id          Int      @id(map: "PK_e3ecbdd242dfa1383f7955615ef") @default(autoincrement())
+  store       String   @db.VarChar
+  local       String   @db.VarChar
+  area_m2     String   @db.VarChar
+  sector      String   @db.VarChar
+  user_create String   @db.VarChar
+  user_update String   @db.VarChar
+  created_at  DateTime @default(now()) @db.Timestamp(6)
+  updated_at  DateTime @default(now()) @db.Timestamp(6)
+}
+
+model weekly_prices {
+  id           Int      @id(map: "PK_a84f974024b87f5786024619ab9") @default(autoincrement())
+  name         String   @db.VarChar
+  presentation String   @db.VarChar
+  marketOne    String   @db.VarChar
+  marketTwo    String   @db.VarChar
+  marketThree  String   @db.VarChar
+  kilogram     String   @db.VarChar
+  variation    String   @db.VarChar
+  created_at   DateTime @default(now()) @db.Timestamp(6)
+  updated_at   DateTime @default(now()) @db.Timestamp(6)
+  user_create  String   @db.VarChar
+  user_update  String   @db.VarChar
+}
