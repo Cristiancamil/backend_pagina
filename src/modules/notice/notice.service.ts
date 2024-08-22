@@ -5,11 +5,8 @@ import { PrismaService } from 'src/database/prisma.service';
 
 @Injectable()
 export class NoticeService {
+  constructor(private prismaService: PrismaService) {}
 
-  constructor(
-    private prismaService: PrismaService
-  ){}
-  
   create(createNoticeDto: CreateNoticeDto) {
     return 'This action adds a new notice';
   }
