@@ -2,9 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { CreateNoticeDto } from './dto/create-notice.dto';
 import { UpdateNoticeDto } from './dto/update-notice.dto';
 import { PrismaService } from 'src/database/prisma.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class NoticeService {
+
+  private selectNew: Prisma.newsSelect = {
+    id: true,
+    title: true,
+    date: true,
+    resumen: true,
+    picture: true,
+  };
   constructor(private prismaService: PrismaService) {}
 
   create(createNoticeDto: CreateNoticeDto) {
@@ -12,11 +21,16 @@ export class NoticeService {
   }
 
   findAll() {
-    return this.prismaService.news.findMany();
+    return this.prismaService.news.findMany({
+      select: this.selectNew,
+    });
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} notice`;
+    return this.prismaService.news.findUnique({
+      where: { id },
+      select: this.selectNew,
+    })
   }
 
   update(id: number, updateNoticeDto: UpdateNoticeDto) {
