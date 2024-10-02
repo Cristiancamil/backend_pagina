@@ -27,9 +27,8 @@ export class WeeklyPriceService {
       await this.prismaService.weekly_prices.create({
         data: {
           ...item,
-          marketOne: String(item.marketOne),
-          marketTwo: String(item.marketOne),
-          marketThree: String(item.marketOne),
+          previous_week_day: String(item.previous_week_day),
+          current_weekday: String(item.current_weekday),
           kilogram: String(item.kilogram),
           variation: String(item.variation),
           user_create: 'clopez',
@@ -39,16 +38,57 @@ export class WeeklyPriceService {
     }
   }
 
-  findAll() {
-    return this.prismaService.weekly_prices.findMany();
+  async findAll() {
+    const hoy = new Date();
+    const anterior = new Date();
+    anterior.setDate(hoy.getDate() - 7);
+  
+    const formatearFecha = (fecha: Date) => {
+      const opc: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short' };
+      return fecha.toLocaleDateString('es-ES', opc).replace(' ', '_');
+    };
+  
+    const weeklyPrices = await this.prismaService.weekly_prices.findMany();
+  
+    return {
+      today: formatearFecha(hoy),
+      previousday: formatearFecha(anterior),
+      weeklyPrices
+    };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} weeklyPrice`;
+  async findOne(id: number) {
+    const hoy = new Date();
+    const anterior = new Date();
+    anterior.setDate(hoy.getDate() - 7);
+  
+    const formatearFecha = (fecha: Date) => {
+      const opc: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short' };
+      return fecha.toLocaleDateString('es-ES', opc).replace(' ', '_');
+    };
+  
+    const weeklyPrice = await this.prismaService.weekly_prices.findUnique({
+      where: { id },
+    });
+  
+    return {
+      today: formatearFecha(hoy),
+      previousday: formatearFecha(anterior),
+      weeklyPrice
+    };
   }
 
-  update(id: number, updateWeeklyPriceDto: UpdateWeeklyPriceDto) {
-    return `This action updates a #${id} weeklyPrice`;
+  async update(id: number, updateWeeklyPriceDto: UpdateWeeklyPriceDto) {
+    const updatedWeeklyPrice = await this.prismaService.weekly_prices.update({
+      where: { id: id },
+      data: {
+        ...updateWeeklyPriceDto,
+        user_create: 'clopez',
+        user_update: 'clopez'
+      }
+    })
+
+    return updatedWeeklyPrice;
   }
 
   remove(id: number) {

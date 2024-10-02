@@ -51,9 +51,8 @@ model weekly_prices {
   id           Int      @id(map: "PK_a84f974024b87f5786024619ab9") @default(autoincrement())
   name         String   @db.VarChar
   presentation String   @db.VarChar
-  marketOne    String   @db.VarChar
-  marketTwo    String   @db.VarChar
-  marketThree  String   @db.VarChar
+  previous_week_day    String   @db.VarChar
+  current_weekday    String   @db.VarChar
   kilogram     String   @db.VarChar
   variation    String   @db.VarChar
   created_at   DateTime @default(now()) @db.Timestamp(6)

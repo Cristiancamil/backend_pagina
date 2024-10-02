@@ -1,15 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { AvailableSpaceService } from './available-space.service';
 import { CreateAvailableSpaceDto } from './dto/create-available-space.dto';
 import { UpdateAvailableSpaceDto } from './dto/update-available-space.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('available-space')
 export class AvailableSpaceController {
   constructor(private readonly availableSpaceService: AvailableSpaceService) {}
 
   @Post()
-  create(@Body() createAvailableSpaceDto: CreateAvailableSpaceDto) {
-    return this.availableSpaceService.create(createAvailableSpaceDto);
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFile(@UploadedFile() file: Express.Multer.File) {
+    const data = this.availableSpaceService.parserExcel(file)
+    await this.availableSpaceService.saveToDatabase(data)
+    return { message: 'Información subida con exito' }
   }
 
   @Get()

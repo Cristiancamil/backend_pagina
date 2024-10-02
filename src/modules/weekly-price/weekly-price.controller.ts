@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, Put } from '@nestjs/common';
 import { WeeklyPriceService } from './weekly-price.service';
 import { CreateWeeklyPriceDto } from './dto/create-weekly-price.dto';
 import { UpdateWeeklyPriceDto } from './dto/update-weekly-price.dto';
@@ -27,8 +27,8 @@ export class WeeklyPriceController {
     return this.weeklyPriceService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateWeeklyPriceDto: UpdateWeeklyPriceDto) {
+  @Put(':id')
+  update(@Param('id') id: number, @Body() updateWeeklyPriceDto: UpdateWeeklyPriceDto) {
     return this.weeklyPriceService.update(+id, updateWeeklyPriceDto);
   }
 

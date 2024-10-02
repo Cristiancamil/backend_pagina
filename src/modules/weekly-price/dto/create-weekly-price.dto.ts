@@ -1,12 +1,20 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateWeeklyPriceDto {
-    @IsString()
-    marketOne: string
 
     @IsString()
-    marketTow: string
+    @IsOptional()
+    kilogram?: string
+    
+    @IsString()
+    @IsOptional()
+    variation?: string
 
     @IsString()
-    marketThree: string
+    @IsOptional()
+    previous_week_day?: string
+
+    @IsString()
+    @IsOptional()
+    current_weekday?: string
 }
